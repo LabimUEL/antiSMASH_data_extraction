@@ -158,20 +158,40 @@ for dirpath, dirnames, files in os.walk('./'):
             ### Salva o arquivo numa pasta de CSV de cada cluster
             df1.to_csv('data_frame/tempfile'+reg_num0+'.csv')
             
+            cds_df = pd.DataFrame([CDS_smCOG_count], index=[1])
+            cluster_name_1 = df2.loc[df2["clust_num"] == int(reg_num0), "nome"]
+            cf1 = cluster_name_1.to_frame()
+            cds_df['nome'] = cf1.iloc[0,0] 
+            cds_df['acc'] = acc_clust
+            cds_df.to_csv('data_frame/tempfile_smCOG'+reg_num0+'.csv')
+            
 ####################################################            
 ### Concatena todos os CSV criados eu um arquivo ###
 ####################################################
 
-files_paths = []
+files_paths0 = []
 
 for dirpath, dirnames, files in os.walk('./'):
-    #print(f'Found directory: {dirpath}')
     for file_name in files:
-        file_path = os.path.join(dirpath, file_name)
-        if dirpath == './data_frame' and file_name.startswith('tempfile'):
+        file_path0 = os.path.join(dirpath, file_name)
+        if dirpath == './data_frame' and file_name.startswith('tempfile_motifs'):
             
-            files_paths.append(file_path)
+            files_paths0.append(file_path0)
             
-df5 = pd.concat(map(pd.read_csv, files_paths), ignore_index=True)
+df5 = pd.concat(map(pd.read_csv, files_paths0), ignore_index=True)
 df5 = df5.fillna(0)
 df5.to_csv('data_frame/all_features_CDS_motifs.csv', header=True)
+
+
+files_paths1 = []
+
+for dirpath, dirnames, files in os.walk('./'):
+    for file_name in files:
+        file_path1 = os.path.join(dirpath, file_name)
+        if dirpath == './data_frame' and file_name.startswith('tempfile_smCOG'):
+            
+            files_paths1.append(file_path1)
+            
+df6 = pd.concat(map(pd.read_csv, files_paths1), ignore_index=True)
+df6 = df6.fillna(0)
+df6.to_csv('data_frame/all_features_CDS_smCOG.csv', header=True)
