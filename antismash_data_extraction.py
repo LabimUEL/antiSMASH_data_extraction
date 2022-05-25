@@ -95,6 +95,8 @@ for dirpath, dirnames, files in os.walk('./'):
             
             cds_motifs_list = []
             cds_motifs_counts = {}
+            CDS_smCOG_list = []
+            CDS_smCOG_count = {}
             
             
             ### Obtem o numero do clusters dentro do resultado do antiSMASH
@@ -137,6 +139,18 @@ for dirpath, dirnames, files in os.walk('./'):
                     else:
                         cdsmotif_note = None 
                         cdsmotif_note_f = None
+                        
+                if features.type == 'CDS':
+                    gen_func = features.qualifiers.get('gene_functions')
+                    if gen_func != None:
+                        for items in gen_func:                        
+                            if 'smcogs' in items:
+                                SMCOG_type0 = re.search("SMCOG[0-9]*:.*[(]", str(items))
+                                SMCOG_type1 = SMCOG_type0.group().replace("(","").strip()
+                                if SMCOG_type1 not in CDS_smCOG_list:
+                                    CDS_smCOG_list.append(SMCOG_type1)
+                                    CDS_smCOG_count[SMCOG_type1] = 0
+                                CDS_smCOG_count[SMCOG_type1] += 1
             
             ### Cria 1 DataFrame pra cada cluster contendo a contagem de cada feature extraído
             
