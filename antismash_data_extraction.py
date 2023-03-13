@@ -1,6 +1,8 @@
+#!/usr/bin/env python3
+
 import pandas as pd
 import re
-import os
+from os import walk, path, mkdir, remove
 from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
@@ -12,9 +14,9 @@ from Bio.SeqRecord import SeqRecord
 
 clusters_names_csv = open('clustersname.csv','w')
 
-for dirpath, dirnames, files in os.walk('./'):
+for dirpath, dirnames, files in walk('./'):
     for file_name in files:
-        file_path = os.path.join(dirpath, file_name)
+        file_path = path.join(dirpath, file_name)
         
         ### busca arquivos dentro da pasta /knownclusterblast, output do antiSMASH
         if dirpath == './knownclusterblast':
@@ -88,9 +90,9 @@ clusters_names_csv.close()
 ### Leitura dos arquivos output do antiSMASH ###
 ################################################
 
-os.mkdir('data_frame/')
+mkdir('data_frame/')
 
-for dirpath, dirnames, files in os.walk('./'):
+for dirpath, dirnames, files in walk('./'):
     
     for dirname in dirnames:
         pastas = dirname
@@ -261,9 +263,9 @@ txt0 = 'motifs_cluster'
 
 files_paths0 = []
 
-for dirpath, dirnames, files in os.walk('./'):
+for dirpath, dirnames, files in walk('./'):
     for file_name in files:
-        file_path0 = os.path.join(dirpath, file_name)
+        file_path0 = path.join(dirpath, file_name)
         if dirpath == './data_frame' and txt0 in file_name:
             
             files_paths0.append(file_path0)
@@ -278,9 +280,9 @@ txt1 = 'smCOG'
 
 files_paths1 = []
 
-for dirpath, dirnames, files in os.walk('./'):
+for dirpath, dirnames, files in walk('./'):
     for file_name in files:
-        file_path1 = os.path.join(dirpath, file_name)
+        file_path1 = path.join(dirpath, file_name)
         if dirpath == './data_frame' and txt1 in file_name:
             
             files_paths1.append(file_path1)
@@ -295,9 +297,9 @@ txt2 = 'PFAMdesc'
 
 files_paths2 = []
 
-for dirpath, dirnames, files in os.walk('./'):
+for dirpath, dirnames, files in walk('./'):
     for file_name in files:
-        file_path2 = os.path.join(dirpath, file_name)
+        file_path2 = path.join(dirpath, file_name)
         if dirpath == './data_frame' and txt2 in file_name:
             
             files_paths2.append(file_path2)
@@ -312,9 +314,9 @@ txt3 = 'PFAM_GO'
 
 files_paths3 = []
 
-for dirpath, dirnames, files in os.walk('./'):
+for dirpath, dirnames, files in walk('./'):
     for file_name in files:
-        file_path3 = os.path.join(dirpath, file_name)
+        file_path3 = path.join(dirpath, file_name)
         if dirpath == './data_frame' and txt3 in file_name:
             
             files_paths3.append(file_path3)
@@ -329,9 +331,9 @@ txt4 = 'PFAM_ID'
 
 files_paths4 = []
 
-for dirpath, dirnames, files in os.walk('./'):
+for dirpath, dirnames, files in walk('./'):
     for file_name in files:
-        file_path4 = os.path.join(dirpath, file_name)
+        file_path4 = path.join(dirpath, file_name)
         if dirpath == './data_frame' and txt4 in file_name:
             #print(file_name)
             files_paths4.append(file_path4)
@@ -341,8 +343,8 @@ df9 = df9.fillna(0)
 df9 = df9.sort_values(by='acc')
 df9.to_csv('data_frame/all_features_PFAM_ID.csv', header=True)
 
-for dirpath, dirnames, files in os.walk('./'):
+for dirpath, dirnames, files in walk('./'):
     for file_name in files:
-        file_path__ = os.path.join(dirpath, file_name)
+        file_path__ = path.join(dirpath, file_name)
         if re.search('tempfile', file_name):
-            os.remove(file_path__)
+            remove(file_path__)
