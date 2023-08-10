@@ -142,11 +142,11 @@ def tuning_rf_bayesian():
 
 	"""Tuning of classifier: Random Forest - Bayesian Optimization"""
 
-	param = {'criterion': ['entropy', 'gini'], 'max_features': ['auto', 'sqrt', 'log2', None], 'bootstrap': [True, False]}
+	param = {'criterion': ['entropy', 'gini'], 'max_features': ['sqrt', 'log2', None], 'bootstrap': [True, False]}
 	space = {'criterion': hp.choice('criterion', ['entropy', 'gini']),
 			 'n_estimators': hp.quniform('n_estimators', 100, 2000, 50),
 			 'max_depth': hp.quniform('max_depth', 10, 100, 5),
-			 'max_features': hp.choice('max_features', ['auto', 'sqrt', 'log2', None]),
+			 'max_features': hp.choice('max_features', ['sqrt', 'log2', None]),
 			 'min_samples_leaf': hp.quniform('min_samples_leaf', 1, 10, 1),
 			 'min_samples_split': hp.quniform('min_samples_split', 2, 10, 1),
 			 'bootstrap': hp.choice('bootstrap', [True, False])}
